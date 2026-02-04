@@ -6,9 +6,8 @@ import java.time.Instant;
 import java.util.Objects;
 
 @Entity
-@Table(name = "bloco")
+@Table(name = "tb_bloco")
 public class Bloco {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,6 +19,7 @@ public class Bloco {
     private Instant fim;
 
     @ManyToOne
+    @JoinColumn(name = "atividade_id")
     private Atividade atividade;
 
     public Bloco() {
@@ -60,14 +60,9 @@ public class Bloco {
         return atividade;
     }
 
-    public void setAtividade(Atividade atividade) {
-        this.atividade = atividade;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-
         Bloco bloco = (Bloco) o;
         return Objects.equals(id, bloco.id);
     }

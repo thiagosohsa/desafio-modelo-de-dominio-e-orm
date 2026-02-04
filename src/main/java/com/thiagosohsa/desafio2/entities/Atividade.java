@@ -5,9 +5,8 @@ import jakarta.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name = "atividade")
+@Table(name = "tb_atividade")
 public class Atividade {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -17,15 +16,15 @@ public class Atividade {
     private String descricao;
     private Double preco;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
     @ManyToMany(mappedBy = "atividades")
     private Set<Participante> participantes = new HashSet<>();
 
     @OneToMany(mappedBy = "atividade")
     private List<Bloco> blocos = new ArrayList<>();
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
 
     public Atividade() {
     }
@@ -70,26 +69,21 @@ public class Atividade {
         this.preco = preco;
     }
 
-    public List<Bloco> getBlocos() {
-        return blocos;
-    }
-
     public Categoria getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
+    public Set<Participante> getParticipantes() {
+        return Set.copyOf(participantes);
     }
 
-    public Set<Participante> getParticipantes() {
-        return participantes;
+    public List<Bloco> getBlocos() {
+        return List.copyOf(blocos);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-
         Atividade atividade = (Atividade) o;
         return Objects.equals(id, atividade.id);
     }

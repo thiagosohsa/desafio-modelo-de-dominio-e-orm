@@ -2,14 +2,11 @@ package com.thiagosohsa.desafio2.entities;
 
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "tb_categoria")
 public class Categoria {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -18,7 +15,7 @@ public class Categoria {
     private String descricao;
 
     @OneToMany(mappedBy = "categoria")
-    private Set<Atividade> atividades = new HashSet<>();
+    private List<Atividade> atividades = new ArrayList<>();
 
     public Categoria() {
     }
@@ -44,14 +41,13 @@ public class Categoria {
         this.descricao = descricao;
     }
 
-    public Set<Atividade> getAtividades() {
-        return atividades;
+    public List<Atividade> getAtividades() {
+        return List.copyOf(atividades);
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-
         Categoria categoria = (Categoria) o;
         return Objects.equals(id, categoria.id);
     }
